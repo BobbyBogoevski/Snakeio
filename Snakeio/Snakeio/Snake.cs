@@ -25,6 +25,9 @@ namespace Snakeio
 		public int forceY {get;set;}
 		public int newBodyParts {get;set;}
 		public int score {get;set;}
+		public int effectTime {get;set;}
+		public string effectName {get;set;}
+		
 		
 		public Snake(int X, int Y)
 		{
@@ -47,6 +50,7 @@ namespace Snakeio
 			
 			switch(foodType){
 					case "normal":newBodyParts++;score++;break;
+					
 			}
 		}
 		
