@@ -10,38 +10,33 @@ C# верзија на Slitherio. Користејќи го глушецот з�
 
 Змијата е генерирана во центарот на мапата, со нејзината глава нацртана во центарот на прозорецот.
 
-<code>public void Draw(Graphics g, int worldWidth, int worldHeight)
-{
+<code>
+	public void Draw(Graphics g, int worldWidth, int worldHeight)
+		{
+			SolidBrush br = new SolidBrush(color);
+			int centerX = (int)(worldWidth / 2);
+			int centerY = (int)(worldHeight / 2);
+			g.FillEllipse(br, centerX - SNAKEHEAD_RADIUS, centerY - SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS);
+			double angleDeg = (angle * 180 / Math.PI) + 180;
+			g.FillPie(new SolidBrush(Color.White), centerX - SNAKEHEAD_RADIUS, centerY - SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, -(float)(angleDeg + 50), 30f);
+			g.FillPie(new SolidBrush(Color.White), centerX - SNAKEHEAD_RADIUS, centerY - SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, -(float)(angleDeg - 30), 30f);
+			for (int i = 1; i < body.Count; i++) {
+				int distanceX = body[i].X - body[0].X;
+				int distanceY = body[i].Y - body[0].Y;
+				if (distanceX > (20 * i))
+					distanceX = -(int.MaxValue - body[i].X + body[0].X);
+				if (distanceY > (20 * i))
+					distanceY = -(int.MaxValue - body[i].Y + body[0].Y);
+				if (distanceX < (-20 * i))
+					distanceX = (int.MaxValue - body[0].X + body[i].X);
+				if (distanceY < (-20 * i))
+					distanceY = (int.MaxValue - body[0].Y + body[i].Y);
+				Point bodypos = new Point(centerX + distanceX, centerY + distanceY);
+				g.FillEllipse(br, bodypos.X - SNAKEHEAD_RADIUS, bodypos.Y - SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS);
+			}
+			br.Dispose();
+		}
 
-SolidBrush br = new SolidBrush(color);
-
-int centerX = (int)(worldWidth / 2);
-int centerY = (int)(worldHeight / 2);
-g.FillEllipse(br, centerX - SNAKEHEAD_RADIUS, centerY - SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS);
-double angleDeg = (angle * 180 / Math.PI) + 180;
-g.FillPie(new SolidBrush(Color.White), centerX - SNAKEHEAD_RADIUS, centerY - SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, -(float)(angleDeg + 50), 30f);
-g.FillPie(new SolidBrush(Color.White), centerX - SNAKEHEAD_RADIUS, centerY - SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, -(float)(angleDeg - 30), 30f);
-
-for (int i = 1; i < body.Count; i++) {
-	int distanceX = body[i].X - body[0].X;
-	int distanceY = body[i].Y - body[0].Y;
-	if (distanceX > (20 * i))
-		distanceX = -(int.MaxValue - body[i].X + body[0].X);
-	if (distanceY > (20 * i))
-		distanceY = -(int.MaxValue - body[i].Y + body[0].Y);
-	if (distanceX < (-20 * i))
-		distanceX = (int.MaxValue - body[0].X + body[i].X);
-	if (distanceY < (-20 * i))
-		distanceY = (int.MaxValue - body[0].Y + body[i].Y);
-	
-	Point bodypos = new Point(centerX + distanceX, centerY + distanceY);
-	g.FillEllipse(br, bodypos.X - SNAKEHEAD_RADIUS, bodypos.Y - SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS, 2 * SNAKEHEAD_RADIUS);
-}
-
-
-br.Dispose();
-
-}
 </code>
 
 
