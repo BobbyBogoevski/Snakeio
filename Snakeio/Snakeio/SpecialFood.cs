@@ -40,6 +40,9 @@ namespace Snakeio
 				case "shield":
 					duration = 100;
 					break;
+				case "snowflake":
+					duration = 50;
+					break;
 			}
 		}
 		

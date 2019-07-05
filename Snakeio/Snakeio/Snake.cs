@@ -28,6 +28,7 @@ namespace Snakeio
 		public bool invincible { get; set; }
 		public Color defColor { get; set; }
 		public Color color { get; set; }
+		public bool hasEffect{ get; set; }
 		
 		
 		public Snake()
@@ -63,8 +64,12 @@ namespace Snakeio
 					newBodyParts++;
 					score++;
 					break;
-					case "coffee":force=20;break;
+				case "coffee":
+					hasEffect = true;
+					force = 15;
+					break;
 				case "shield":
+					hasEffect = true;
 					invincible = true;
 					break;
 			}

@@ -32,7 +32,7 @@ namespace Snakeio
 		List<AISnake> snakebots { get; set; }
 		List<Point> dead_snake_food { get; set; }
 		ResourceManager rm { get; set; }
-		Hashtable image_table {get;set;}
+		Hashtable image_table { get; set; }
 		
 		
 		
@@ -45,9 +45,9 @@ namespace Snakeio
 			DoubleBuffered = true;
 			randomizer = new Random();
 			rm = new ResourceManager("Snakeio.foodResources", Assembly.GetExecutingAssembly());
-			image_table=new Hashtable();
-			image_table["coffee"]=(Bitmap)rm.GetObject("coffee");
-			image_table["shield"]=(Bitmap)rm.GetObject("shield");
+			image_table = new Hashtable();
+			image_table["coffee"] = (Bitmap)rm.GetObject("coffee");
+			image_table["shield"] = (Bitmap)rm.GetObject("shield");
 			
 			initTimers();
 			startGame();
@@ -60,9 +60,9 @@ namespace Snakeio
 		{
 			SpecialFood fd;
 			Point f;
-			double angle=(player.angle * 180 / Math.PI) + 180;
+			double angle = (player.angle * 180 / Math.PI) + 180;
 			//south-east
-			if (angle<=340&&angle>=290) {
+			if (angle <= 340 && angle >= 290) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewEndX + 1000, viewEndX + 4000), randomizer.Next(viewStartY, viewEndY)); //east
@@ -73,7 +73,7 @@ namespace Snakeio
 				}
 			}
 			//north-east
-			else if (angle>=20&&angle<=70) {
+			else if (angle >= 20 && angle <= 70) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewStartY - 3000, viewStartY - 300));//north
@@ -85,7 +85,7 @@ namespace Snakeio
 				
 			}
 			//south-west
-			else if (angle>=200&&angle<=250) {
+			else if (angle >= 200 && angle <= 250) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewEndY + 300, viewEndY + 3000));//south
@@ -97,7 +97,7 @@ namespace Snakeio
 				
 			}
 			//north-west
-			else if (angle>=110&&angle<=160) {
+			else if (angle >= 110 && angle <= 160) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewStartY - 3000, viewStartY - 300));//north
@@ -108,17 +108,17 @@ namespace Snakeio
 				}
 			}
 			//east
-			else if (angle<20||angle>340) {
+			else if (angle < 20 || angle > 340) {
 				f = new Point(randomizer.Next(viewEndX + 300, viewEndX + 3000), randomizer.Next(viewStartY, viewEndY));
 				
 			}
 			//west
-			else if (angle>160&&angle<200) {
+			else if (angle > 160 && angle < 200) {
 				f = new Point(randomizer.Next(viewStartX - 3000, viewStartX - 300), randomizer.Next(viewStartY, viewEndY));
 				
 			}
 			//south
-			else if (angle>250&&angle<290) {
+			else if (angle > 250 && angle < 290) {
 				f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewEndY + 300, viewEndY + 3000));
 				
 			}
@@ -163,10 +163,13 @@ namespace Snakeio
 							break;
 					}
 					
-					if(special_food[i].affectedSnake==player&&special_food[i].duration>0) label1.Text=String.Format("{0}",special_food[i].duration/10+1);
-					else if(special_food[i].affectedSnake==player&&special_food[i].duration<=0)label1.Text="";
+					if (special_food[i].affectedSnake == player && special_food[i].duration > 0)
+						label1.Text = String.Format("{0}", special_food[i].duration / 10 + 1);
+					else if (special_food[i].affectedSnake == player && special_food[i].duration <= 0)
+						label1.Text = "";
 					
 					if (special_food[i].duration <= 0) {
+						special_food[i].affectedSnake.hasEffect = false;
 						generateNewSpecialFood(special_food[i].effectName, viewStartX, viewEndX, viewStartY, viewEndY);
 						special_food.RemoveAt(i--);
 						
@@ -210,18 +213,19 @@ namespace Snakeio
 			int x, y;
 			SpecialFood fd;
 			
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < 8; i++) {
 				x = randomizer.Next(viewStartX - 3000, viewEndX + 3000);
 				y = randomizer.Next(viewStartY - 3000, viewEndY + 3000);
 				fd = new SpecialFood(new Point(x, y), "coffee");
 				special_food.Add(fd);
 			}
 			
-			x = randomizer.Next(viewStartX - 5000, viewEndX + 5000);
-			y = randomizer.Next(viewStartY - 5000, viewEndY + 5000);
-			fd = new SpecialFood(new Point(x, y), "shield");
-			special_food.Add(fd);
-			
+			for (int i = 0; i < 2; i++) {
+				x = randomizer.Next(viewStartX - 5000, viewEndX + 5000);
+				y = randomizer.Next(viewStartY - 5000, viewEndY + 5000);
+				fd = new SpecialFood(new Point(x, y), "shield");
+				special_food.Add(fd);
+			}
 		}
 		
 		void startGame()
@@ -248,8 +252,11 @@ namespace Snakeio
 		void stopGame()
 		{
 			mainTimer.Stop();
-			MessageBox.Show(String.Format("You died. Your score: {0}", player.score), "GAME OVER");
-			Close();
+			DialogResult res = MessageBox.Show(String.Format("You died. Your score: {0}. Play again?", player.score), "GAME OVER", MessageBoxButtons.YesNo);
+			if (res == DialogResult.No)
+				Close();
+			else
+				startGame();
 		}
 
 		bool isInCameraView(Point point, int viewStartX, int viewEndX, int viewStartY, int viewEndY, int offset)
@@ -292,9 +299,8 @@ namespace Snakeio
 					case "shield":
 						if (!special_food[i].eaten && isInCameraView(special_food[i].position, viewStartX, viewEndX, viewStartY, viewEndY, special_food[i].foodRadius * 2)) {
 							g.DrawImage((Bitmap)image_table[special_food[i].effectName], special_food[i].position.X - viewStartX - special_food[i].foodRadius, special_food[i].position.Y - viewStartY - special_food[i].foodRadius, 2 * special_food[i].foodRadius, 2 * special_food[i].foodRadius);
-						} 
-						else if(distance(player.body[0],special_food[i].position)>5000){
-							generateNewSpecialFood(special_food[i].effectName,viewStartX,viewEndX,viewStartY,viewEndY);
+						} else if (distance(player.body[0], special_food[i].position) > 5000) {
+							generateNewSpecialFood(special_food[i].effectName, viewStartX, viewEndX, viewStartY, viewEndY);
 							special_food.RemoveAt(i--);
 						}
 						;
@@ -337,8 +343,8 @@ namespace Snakeio
 		{
 			Point f;
 			//south-east
-			double angle=(player.angle * 180 / Math.PI) + 180;
-			if (angle<=340&&angle>=290) {
+			double angle = (player.angle * 180 / Math.PI) + 180;
+			if (angle <= 340 && angle >= 290) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewEndX + 5, viewEndX + 35), randomizer.Next(viewStartY, viewEndY)); //east
@@ -349,7 +355,7 @@ namespace Snakeio
 				}
 			}
 			//north-east
-			else if (angle>=20&&angle<=70) {
+			else if (angle >= 20 && angle <= 70) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewStartY - 35, viewStartY - 5));//north
@@ -361,7 +367,7 @@ namespace Snakeio
 				
 			}
 			//south-west
-			else if (angle>=200&&angle<=250) {
+			else if (angle >= 200 && angle <= 250) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewEndY + 5, viewEndY + 35));//south
@@ -373,7 +379,7 @@ namespace Snakeio
 				
 			}
 			//north-west
-			else if (angle>=110&&angle<=160) {
+			else if (angle >= 110 && angle <= 160) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewStartY - 35, viewStartY - 5));//north
@@ -384,17 +390,17 @@ namespace Snakeio
 				}
 			}
 			//east
-			else if (angle<20||angle>340) {
+			else if (angle < 20 || angle > 340) {
 				f = new Point(randomizer.Next(viewEndX + 5, viewEndX + 35), randomizer.Next(viewStartY, viewEndY));
 				
 			}
 			//west
-			else if (angle>160&&angle<200) {
+			else if (angle > 160 && angle < 200) {
 				f = new Point(randomizer.Next(viewStartX - 35, viewStartX - 5), randomizer.Next(viewStartY, viewEndY));
 				
 			}
 			//south
-			else if (angle>250&&angle<290) {
+			else if (angle > 250 && angle < 290) {
 				f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewEndY + 5, viewEndY + 35));
 				
 			}
@@ -416,39 +422,98 @@ namespace Snakeio
 
 		void generateNewSnakeAI(int viewStartX, int viewEndX, int viewStartY, int viewEndY)
 		{
-			int side = randomizer.Next(0, 4);
+			
 			int pointX, pointY;
-			switch (side) {
-				case 0:
-					//west
+			double angle = (player.angle * 180 / Math.PI) + 180;
+			int num = randomizer.Next(0, 3);
+			
+			//player facing east			
+			if (angle < 45 || angle >= 315) {
+				if (num == 0) {
+					//generate north
+					pointX = randomizer.Next(viewStartX, viewEndX);
+					pointY = randomizer.Next(viewStartY - 3000, viewStartY - 1000);
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));	
+				} else if (num == 1) {
+					//generate east
+					pointX = randomizer.Next(viewEndX + 1000, viewEndX + 3000);
+					pointY = randomizer.Next(viewStartY, viewEndY);
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));		
+				} else {
+					//generate south
+					pointX = randomizer.Next(viewStartX, viewEndX);
+					pointY = randomizer.Next(viewEndY + 1000, viewEndY + 3000);
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));		
+				}
+						
+				//player facing north			
+			} else if (angle < 135 && angle >= 45) {
+				if (num == 0) {
+					//generate west
 					pointX = randomizer.Next(viewStartX - 3000, viewStartX - 1000);
 					pointY = randomizer.Next(viewStartY, viewEndY);
 					snakebots.Add(new AISnake(new Point(pointX, pointY)));
-					break;
-					
-				case 1:
-					//north
+							
+				} else if (num == 1) {
+					//generate north
 					pointX = randomizer.Next(viewStartX, viewEndX);
 					pointY = randomizer.Next(viewStartY - 3000, viewStartY - 1000);
-					snakebots.Add(new AISnake(new Point(pointX, pointY)));
-					break;
-				case 2:
-					//east
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));			
+				} else {
+					//generate east
 					pointX = randomizer.Next(viewEndX + 1000, viewEndX + 3000);
 					pointY = randomizer.Next(viewStartY, viewEndY);
-					snakebots.Add(new AISnake(new Point(pointX, pointY)));
-					break;
-				case 3:
-					//north
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));			
+				}
+				//player facing west
+			} else if (angle < 225 && angle >= 135) {
+				if (num == 0) {
+					//generate south
 					pointX = randomizer.Next(viewStartX, viewEndX);
 					pointY = randomizer.Next(viewEndY + 1000, viewEndY + 3000);
 					snakebots.Add(new AISnake(new Point(pointX, pointY)));
-					break;
+							
+				} else if (num == 1) {
+					//generate west
+					pointX = randomizer.Next(viewStartX - 3000, viewStartX - 1000);
+					pointY = randomizer.Next(viewStartY, viewEndY);
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));		
+				} else {
+					//generate north
+					pointX = randomizer.Next(viewStartX, viewEndX);
+					pointY = randomizer.Next(viewStartY - 3000, viewStartY - 1000);
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));					
+				}
+				//player facing south
+			} else if (angle < 315 && angle >= 225) {
+				if (num == 0) {
+					//generate east
+					pointX = randomizer.Next(viewEndX + 1000, viewEndX + 3000);
+					pointY = randomizer.Next(viewStartY, viewEndY);
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));			
+				} else if (num == 1) {
+					//generate south
+					pointX = randomizer.Next(viewStartX, viewEndX);
+					pointY = randomizer.Next(viewEndY + 1000, viewEndY + 3000);
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));		
+				} else {
+					//generate west
+					pointX = randomizer.Next(viewStartX - 3000, viewStartX - 1000);
+					pointY = randomizer.Next(viewStartY, viewEndY);
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));				
+				}
 			}
+			
 		}
 		
 		
-		
+		void destroyAISnake(int snake_index, int viewStartX, int viewEndX, int viewStartY, int viewEndY)
+		{
+			for (int k = 0; k < snakebots[snake_index].body.Count; k += 3)
+				dead_snake_food.Add(snakebots[snake_index].body[k]);
+			snakebots.RemoveAt(snake_index);
+			generateNewSnakeAI(viewStartX, viewEndX, viewStartY, viewEndY);
+		}
 		
 		void MoveSnakes(object sender, EventArgs e)
 		{
@@ -465,8 +530,8 @@ namespace Snakeio
 			for (int i = 0; i < snakebots.Count; i++) {
 				snakebots[i].Move(food, player, snakebots);
 				if (distance(snakebots[i].body[0], player.body[0]) > 3000) {
-					snakebots.RemoveAt(i--);
-					generateNewSnakeAI(viewStartX, viewEndX, viewStartY, viewEndY);
+					destroyAISnake(i, viewStartX, viewEndX, viewStartY, viewEndY);
+					i--;
 				}
 			}
 			
@@ -475,9 +540,18 @@ namespace Snakeio
 			//Check if player hits other snakes
 			for (int i = 0; i < snakebots.Count; i++) {
 				for (int j = 0; j < snakebots[i].body.Count; j++) {
+					if (i < 0 || i >= snakebots.Count || j < 0 || j >= snakebots[i].body.Count)
+						break;
 					if (distance(player.body[0], snakebots[i].body[j]) <= (2 * player.SNAKEHEAD_RADIUS)) {
-						stopGame();
-						return;
+						if (player.invincible&&!snakebots[i].invincible) {
+							destroyAISnake(i, viewStartX, viewEndX, viewStartY, viewEndY);
+							i--;
+							break;
+						}
+							stopGame();
+							return;
+						
+					
 					}
 				}
 			}
@@ -486,10 +560,11 @@ namespace Snakeio
 			for (int i = 0; i < snakebots.Count; i++) {
 				for (int j = 0; j < player.body.Count; j++) {
 					if (distance(snakebots[i].body[0], player.body[j]) <= (2 * player.SNAKEHEAD_RADIUS)) {
-						for (int k = 0; k < snakebots[i].body.Count; k += 3)
-							dead_snake_food.Add(snakebots[i].body[k]);
-						snakebots.RemoveAt(i--);
-						generateNewSnakeAI(viewStartX, viewEndX, viewStartY, viewEndY);
+						if(snakebots[i].invincible){
+							stopGame();
+							return;
+						}
+						destroyAISnake(i--, viewStartX, viewEndX, viewStartY, viewEndY);
 						break;
 					}
 				}
@@ -497,10 +572,10 @@ namespace Snakeio
 			
 			//Check if ai snakes hit eachother
 			
-			bool snakeDead = false;
+			
 			
 			for (int i = 0; i < snakebots.Count; i++) {
-				snakeDead = false;
+				
 				
 				for (int j = 0; j < snakebots.Count; j++) {
 					
@@ -512,60 +587,49 @@ namespace Snakeio
 							break;
 						
 						if (distance(snakebots[i].body[0], snakebots[j].body[l]) <= (2 * player.SNAKEHEAD_RADIUS)) {
-							for (int k = 0; k < snakebots[i].body.Count; k += 3)
-								dead_snake_food.Add(snakebots[i].body[k]);
-							snakebots.RemoveAt(i--);
-							generateNewSnakeAI(viewStartX, viewEndX, viewStartY, viewEndY);
-							snakeDead = true;
+							if(snakebots[i].invincible&&!snakebots[j].invincible){
+								destroyAISnake(j--,viewStartX,viewEndX,viewStartY,viewEndY);
+								break;
+							}
+							destroyAISnake(i--, viewStartX, viewEndX, viewStartY, viewEndY);
 							break;
 							
 						}
-						if (snakeDead)
-							break;
+					
 					}
 					
 				}
 			}
 			
+		
 			
-			//check if player eats food pill
-			for (int i = 0; i < food.Count; i++) {
-				
-				if (distance(player.body[0], food[i]) <= (player.SNAKEHEAD_RADIUS + NORMAL_FOOD_RADIUS)) {
-					food.RemoveAt(i--);
-					player.Eat("normal");
-					generateNewFood(viewStartX, viewEndX, viewStartY, viewEndY);
+			//check if snakes eat special food
+			
+			for (int s = 0; s < snakebots.Count; s++) {
+				for (int i = 0; i < special_food.Count; i++) {
+					if (!player.hasEffect && distance(player.body[0], special_food[i].position) <= (player.SNAKEHEAD_RADIUS + special_food[i].foodRadius)) {
+						special_food[i].affectedSnake = player;
+						special_food[i].eaten = true;
+						player.Eat(special_food[i].effectName);
+						break;
+					}
+					if (!snakebots[s].hasEffect && distance(snakebots[s].body[0], special_food[i].position) <= (player.SNAKEHEAD_RADIUS + special_food[i].foodRadius)) {
+						special_food[i].affectedSnake = snakebots[s];
+						special_food[i].eaten = true;
+						snakebots[s].Eat(special_food[i].effectName);
+						break;
+					}
 				}
 			}
 			
-			//check if player eats dead snake food pill
-			
-			for (int i = 0; i < dead_snake_food.Count; i++) {
-				
-				if (distance(player.body[0], dead_snake_food[i]) <= (player.SNAKEHEAD_RADIUS + NORMAL_FOOD_RADIUS)) {
-					dead_snake_food.RemoveAt(i--);
-					player.Eat("normal");
-				}
-			}
-			
-			
-			//check if player eats special food
-			
-			for (int i = 0; i < special_food.Count; i++) {
-				
-				if (distance(player.body[0], special_food[i].position) <= (player.SNAKEHEAD_RADIUS + special_food[i].foodRadius)) {
-					player.Eat(special_food[i].effectName);
-					special_food[i].affectedSnake = player;
-					special_food[i].eaten = true;
-				}
-				
-			}
-			
-			//check if snakebot eats food
+			//check if snakes eat food pills
 			for (int s = 0; s < snakebots.Count; s++) {
 				for (int i = 0; i < food.Count; i++) {
-					
-					if (distance(snakebots[s].body[0], food[i]) <= (player.SNAKEHEAD_RADIUS + NORMAL_FOOD_RADIUS)) {
+					if (distance(player.body[0], food[i]) <= (player.SNAKEHEAD_RADIUS + NORMAL_FOOD_RADIUS)) {
+						food.RemoveAt(i--);
+						player.Eat("normal");
+						generateNewFood(viewStartX, viewEndX, viewStartY, viewEndY);
+					} else if (distance(snakebots[s].body[0], food[i]) <= (player.SNAKEHEAD_RADIUS + NORMAL_FOOD_RADIUS)) {
 						food.RemoveAt(i--);
 						snakebots[s].Eat("normal");
 						generateNewFood(viewStartX, viewEndX, viewStartY, viewEndY);
@@ -574,11 +638,13 @@ namespace Snakeio
 			}
 			
 			
-			//check if snakebot eats dead snake food pill
+			//check if snakes eat dead snake food pill
 			for (int s = 0; s < snakebots.Count; s++) {
 				for (int i = 0; i < dead_snake_food.Count; i++) {
-					
-					if (distance(snakebots[s].body[0], dead_snake_food[i]) <= (player.SNAKEHEAD_RADIUS + NORMAL_FOOD_RADIUS)) {
+					if (distance(player.body[0], dead_snake_food[i]) <= (player.SNAKEHEAD_RADIUS + NORMAL_FOOD_RADIUS)) {
+						dead_snake_food.RemoveAt(i--);
+						player.Eat("normal");
+					} else if (distance(snakebots[s].body[0], dead_snake_food[i]) <= (player.SNAKEHEAD_RADIUS + NORMAL_FOOD_RADIUS)) {
 						dead_snake_food.RemoveAt(i--);
 						snakebots[s].Eat("normal");
 					}
