@@ -146,5 +146,16 @@ namespace Snakeio
 			
 		}
 		
+		
+		public int decision_score(Point p){
+			double distance=int.MaxValue;
+			for(int i=0;i<body.Count;i++){
+				double d=MainForm.distance(body[i],p);
+				if(distance>d) distance=d;
+			}
+			
+			return (int)(-distance)+5000;
+		}
+		
 	}
 }

@@ -17,7 +17,7 @@ namespace Snakeio
 	/// </summary>
 	public class AISnake:Snake
 	{
-		int movement_action = 4;
+		int movement_action = 2;
 		static Random randomizer { get; set; }
 		public int count { get; set; }
 		static Color[] ColorChoice = {
@@ -48,6 +48,7 @@ namespace Snakeio
 			newBodyParts = 0;
 			count = randomizer.Next(0, 200);
 			color = ColorChoice[randomizer.Next(0, ColorChoice.Length)];
+			
 		}
 		
 		public AISnake(Point p)
@@ -77,46 +78,28 @@ namespace Snakeio
 		public void Move(List<Point> food, Snake player, List<AISnake> snakes)
 		{
 			if (count == 0) {
-				if (movement_action > 4)
-					movement_action = 4;
-				double min_dist = double.MaxValue;
-				int md_index = -1;
+				int md_index=-1;
+				int max_score=int.MinValue;
 				
-				for (int i = 0; i < food.Count; i++) {
-					double dist = MainForm.distance(body[0], food[i]);
-					if (dist < min_dist) {
-						min_dist = dist;
-						md_index = i;
+				for(int i=0;i<food.Count;i++){
+					int total=0;
+					total+=player.decision_score(food[i]);
+					total+=player.decision_score(body[0]);
+					for(int j=0;j<snakes.Count;j++){
+						if(snakes[j]==this) continue;
+						total+=snakes[j].decision_score(food[i]);
+						total+=snakes[j].decision_score(body[0]);
 					}
-				}
-				
-				changeAngle(food[md_index]);
-				
-				
-				for (int i = 0; i < snakes.Count; i++) {
-					if (this == snakes[i])
-						continue;
-					for (int j = 0; j < snakes[i].body.Count; j++) {
-						if (MainForm.distance(body[0], snakes[i].body[j]) < 150) {
-							changeAngle(snakes[i].body[j]);
-							angle = -angle;
-							movement_action = 10;
-							break;
-						}
-					}
-				}
-				
-				for (int i = 0; i < player.body.Count; i++) {
-					if (MainForm.distance(body[0], player.body[i]) < 150) {
-						changeAngle(player.body[i]);
-						angle = -angle;
-						movement_action = 10;
-						break;
+					total-=(int)MainForm.distance(body[0],food[i]);
+					if(max_score<total){
+						max_score=total;
+						md_index=i;
 					}
 				}
 				
 				
 				
+				changeAngle(food[md_index]);	
 			}
 			
 			

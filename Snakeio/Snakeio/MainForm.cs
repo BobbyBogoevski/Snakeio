@@ -434,16 +434,19 @@ namespace Snakeio
 					pointX = randomizer.Next(viewStartX, viewEndX);
 					pointY = randomizer.Next(viewStartY - 3000, viewStartY - 1000);
 					snakebots.Add(new AISnake(new Point(pointX, pointY)));	
+					
 				} else if (num == 1) {
 					//generate east
 					pointX = randomizer.Next(viewEndX + 1000, viewEndX + 3000);
 					pointY = randomizer.Next(viewStartY, viewEndY);
-					snakebots.Add(new AISnake(new Point(pointX, pointY)));		
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));
+									
 				} else {
 					//generate south
 					pointX = randomizer.Next(viewStartX, viewEndX);
 					pointY = randomizer.Next(viewEndY + 1000, viewEndY + 3000);
-					snakebots.Add(new AISnake(new Point(pointX, pointY)));		
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));
+									
 				}
 						
 				//player facing north			
@@ -458,12 +461,14 @@ namespace Snakeio
 					//generate north
 					pointX = randomizer.Next(viewStartX, viewEndX);
 					pointY = randomizer.Next(viewStartY - 3000, viewStartY - 1000);
-					snakebots.Add(new AISnake(new Point(pointX, pointY)));			
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));
+									
 				} else {
 					//generate east
 					pointX = randomizer.Next(viewEndX + 1000, viewEndX + 3000);
 					pointY = randomizer.Next(viewStartY, viewEndY);
-					snakebots.Add(new AISnake(new Point(pointX, pointY)));			
+					snakebots.Add(new AISnake(new Point(pointX, pointY)));
+									
 				}
 				//player facing west
 			} else if (angle < 225 && angle >= 135) {
@@ -472,17 +477,19 @@ namespace Snakeio
 					pointX = randomizer.Next(viewStartX, viewEndX);
 					pointY = randomizer.Next(viewEndY + 1000, viewEndY + 3000);
 					snakebots.Add(new AISnake(new Point(pointX, pointY)));
-							
+						
 				} else if (num == 1) {
 					//generate west
 					pointX = randomizer.Next(viewStartX - 3000, viewStartX - 1000);
 					pointY = randomizer.Next(viewStartY, viewEndY);
 					snakebots.Add(new AISnake(new Point(pointX, pointY)));		
+					
 				} else {
 					//generate north
 					pointX = randomizer.Next(viewStartX, viewEndX);
 					pointY = randomizer.Next(viewStartY - 3000, viewStartY - 1000);
 					snakebots.Add(new AISnake(new Point(pointX, pointY)));					
+					
 				}
 				//player facing south
 			} else if (angle < 315 && angle >= 225) {
@@ -491,16 +498,19 @@ namespace Snakeio
 					pointX = randomizer.Next(viewEndX + 1000, viewEndX + 3000);
 					pointY = randomizer.Next(viewStartY, viewEndY);
 					snakebots.Add(new AISnake(new Point(pointX, pointY)));			
+					
 				} else if (num == 1) {
 					//generate south
 					pointX = randomizer.Next(viewStartX, viewEndX);
 					pointY = randomizer.Next(viewEndY + 1000, viewEndY + 3000);
 					snakebots.Add(new AISnake(new Point(pointX, pointY)));		
+					
 				} else {
 					//generate west
 					pointX = randomizer.Next(viewStartX - 3000, viewStartX - 1000);
 					pointY = randomizer.Next(viewStartY, viewEndY);
 					snakebots.Add(new AISnake(new Point(pointX, pointY)));				
+					
 				}
 			}
 			
@@ -529,7 +539,7 @@ namespace Snakeio
 			//move ai snakes
 			for (int i = 0; i < snakebots.Count; i++) {
 				snakebots[i].Move(food, player, snakebots);
-				if (distance(snakebots[i].body[0], player.body[0]) > 3000) {
+				if (distance(snakebots[i].body[0], player.body[0]) > 2000) {
 					destroyAISnake(i, viewStartX, viewEndX, viewStartY, viewEndY);
 					i--;
 				}
