@@ -29,13 +29,13 @@ C# верзија на Slitherio. Користејќи го глушецот з�
 
 
 Притоа, за добивање на следната позиција на главата, ги користиме следниве формули:
-<code>
 	
-	forceX = -(int)(force * Math.Cos(angle));
-	forceY = (int)(force * Math.Sin(angle));
-	posX = body[0].X + forceX;
-	posY = body[0].Y + forceY;
-</code>
+>	forceX = -(int)(force * Math.Cos(angle));
+>	forceY = (int)(force * Math.Sin(angle));
+>	posX = body[0].X + forceX;
+>	posY = body[0].Y + forceY;
+>	body[0] = new Point(posX,posY);
+	
 каде force ја одредува брзината на движење на змијата и е еднаква на 10. Овој код за придвижување го позајмив од https://github.com/bibhuticoder/snake.io.
 
 <h2>Power ups</h2>
