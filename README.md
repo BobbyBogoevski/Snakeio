@@ -17,71 +17,74 @@ void generateNewFood(int viewStartX, int viewEndX, int viewStartY, int viewEndY)
 			if (angle <= 340 && angle >= 290) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
-					f = new Point(randomizer.Next(viewEndX + 5, viewEndX + 35), randomizer.Next(viewStartY, viewEndY)); //east
+					f = new Point(randomizer.Next(viewEndX + 5, viewEndX + 35), randomizer.Next(viewStartY, viewEndY)); 
 					
-				} else {
+} else {
 					f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewEndY + 5, viewEndY + 35));//south
 					
 				}
 			}
 			//north-east
-			else if (angle >= 20 && angle <= 70) {
+else if (angle >= 20 && angle <= 70) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewStartY - 35, viewStartY - 5));//north
 					
-				} else {
+				} 
+else {
 					f = new Point(randomizer.Next(viewEndX + 5, viewEndX + 35), randomizer.Next(viewStartY, viewEndY));//east
 					
 				}
 				
 			}
 			//south-west
-			else if (angle >= 200 && angle <= 250) {
+else if (angle >= 200 && angle <= 250) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewEndY + 5, viewEndY + 35));//south
 					
-				} else {
+				} 
+else {
 					f = new Point(randomizer.Next(viewStartX - 35, viewStartX - 5), randomizer.Next(viewStartY, viewEndY));//west
 					
 				}
 				
 			}
 			//north-west
-			else if (angle >= 110 && angle <= 160) {
+else if (angle >= 110 && angle <= 160) {
 				int side = randomizer.Next(0, 2);
 				if (side == 0) {
 					f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewStartY - 35, viewStartY - 5));//north
 					
-				} else {
+				} 
+else {
 					f = new Point(randomizer.Next(viewStartX - 35, viewStartX - 5), randomizer.Next(viewStartY, viewEndY));//west
 					
 				}
 			}
 			//east
-			else if (angle < 20 || angle > 340) {
+else if (angle < 20 || angle > 340) {
 				f = new Point(randomizer.Next(viewEndX + 5, viewEndX + 35), randomizer.Next(viewStartY, viewEndY));
 				
 			}
 			//west
-			else if (angle > 160 && angle < 200) {
+else if (angle > 160 && angle < 200) {
 				f = new Point(randomizer.Next(viewStartX - 35, viewStartX - 5), randomizer.Next(viewStartY, viewEndY));
 				
 			}
 			//south
-			else if (angle > 250 && angle < 290) {
+else if (angle > 250 && angle < 290) {
 				f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewEndY + 5, viewEndY + 35));
 				
 			}
 			//north
-			else {
+else {
 				f = new Point(randomizer.Next(viewStartX, viewEndX), randomizer.Next(viewStartY - 35, viewStartY - 5));
 				
 			}
 			
 			
-			food.Add(f);
+food.Add(f);
 		}
 </code>
 
